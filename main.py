@@ -1,3 +1,35 @@
+import importlib.metadata
+import pathlib
+import re
+import sys
+
+
+def _check_requirements():
+    req = pathlib.Path(__file__).parent / "requirements.txt"
+    if not req.exists():
+        return
+    missing = []
+    for line in req.read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        name = re.split(r"[><=!~\[\s]", line)[0]
+        try:
+            importlib.metadata.version(name)
+        except importlib.metadata.PackageNotFoundError:
+            missing.append(line)
+    if missing:
+        print("Missing packages:")
+        for p in missing:
+            print(f"  {p}")
+        print("\nInstall with: pip install -r requirements.txt")
+        input("\nPress Enter to exit...")
+        sys.exit(1)
+
+
+_check_requirements()
+
+
 import platform
 import subprocess
 import sys
@@ -12,29 +44,10 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 system('clear' if platform.system() == 'nt' else 'cls')
 print("Welcome to the Ethereum Transaction Tracker!\n\nBooting up...")
 
-def check_and_install_module(module_name):
-    try:
-        __import__(module_name)
-    except ImportError:
-        user_approval = input(f"\n{module_name} is not installed. Do you want to install it? (y/n): ")
-        if user_approval.lower() == 'y':
-            subprocess.check_call([sys.executable, "-m", "pip", "install", module_name], stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-            print(f"{module_name} has been successfully installed.")
-        else:
-            print("Installation aborted by the user.")
-            sleep(4)
-            system('clear' if platform.system() == 'nt' else 'cls')
-            print("Welcome to the Ethereum Transaction Tracker!\n")
-    else:
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", module_name], stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-
 
 import requests
 import yfinance as yf
 import pandas as pd
-check_and_install_module('requests')
-check_and_install_module('yfinance')
-check_and_install_module('pandas')
 
 """ Variables """
 
