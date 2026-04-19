@@ -18,25 +18,12 @@ Before using the Ethereum Transaction Tracker, ensure you have the following:
 - `requests` and `matplotlib` Python libraries installed.
 - An Etherscan API Key.
 
-## Installation Instructions
+## Installation
 
-1. **Install Python Dependencies**:
-
-    ```bash
-    pip install requests matplotlib
-    ```
-
-2. **Obtain an Etherscan API Key**:
-
-    Sign up at [Etherscan.io](https://etherscan.io/) to get your API key.
-
-3. **Configure Your API Key**:
-
-    Create a `config.py` file in the same directory as your script and add your Etherscan API Key:
-
-    ```python
-    ETHERSCAN_API_KEY = 'Your_Etherscan_API_Key_Here'
-    ```
+```bash
+pip install -r requirements.txt
+python main.py
+```
 
 ## Usage
 
